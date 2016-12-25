@@ -1,0 +1,15 @@
+.note-list .message {
+	background-image:url(../images/icon_export.gif);
+}
+.note-list .message:first-child {
+	border-top: none;
+    margin-top: 0 !important;
+}
+.with-padding-top td {
+	padding-top: 2px;
+}
+.recived {
+	padding-left:20px;
+	background-image:url(../images/ico_success.gif); 
+	background-repeat: no-repeat;
+}

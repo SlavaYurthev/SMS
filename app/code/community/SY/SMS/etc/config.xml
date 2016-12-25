@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * SMS
+ * 
+ * @author Slava Yurthev
+ */
+-->
+<config>
+    <modules>
+        <SY_SMS>
+            <version>0.0.1</version>
+        </SY_SMS>
+    </modules>
+    <global>
+        <models>
+            <sy_sms>
+                <class>SY_SMS_Model</class>
+                <resourceModel>sy_sms_resource</resourceModel>
+            </sy_sms>
+            <sy_sms_resource>
+                <class>SY_SMS_Model_Resource</class>
+                <entities>
+                    <sy_sms_templates>
+                        <table>sy_sms_templates</table>
+                    </sy_sms_templates>
+                    <sy_sms_variables>
+                        <table>sy_sms_variables</table>
+                    </sy_sms_variables>
+                    <sy_sms_orders>
+                        <table>sy_sms_orders</table>
+                    </sy_sms_orders>
+                    <sy_sms_stream>
+                        <table>sy_sms_stream</table>
+                    </sy_sms_stream>
+                </entities>
+            </sy_sms_resource>
+        </models>
+        <blocks>
+            <sy_sms>
+                <class>SY_SMS_Block</class>
+            </sy_sms>
+        </blocks>
+        <helpers>
+            <sy_sms>
+                <class>SY_SMS_Helper</class>
+            </sy_sms>
+        </helpers>
+        <resources>
+            <sy_sms_setup>
+                <setup>
+                    <module>SY_SMS</module>
+                </setup>
+            </sy_sms_setup>
+        </resources>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <SY_SMS_Adminhtml before="Mage_Adminhtml">SY_SMS_Adminhtml</SY_SMS_Adminhtml>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <sy_sms translate="title">
+                                            <title>SMS</title>
+                                        </sy_sms>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <layout>
+            <updates>
+                <sy_sms>
+                    <file>SY/sms.xml</file>
+                </sy_sms>
+            </updates>
+        </layout>
+    	<translate>
+            <modules>
+                <sy_sms>
+                    <files>
+                        <default>SY/sms.csv</default>
+                    </files>
+                </sy_sms>
+            </modules>
+        </translate>
+        <menu>
+        	<sy translate="title" module="sy_sms">
+	            <title>SY</title>
+	            <sort_order>15</sort_order>
+	            <children>
+	                <smsclub translate="title" module="sy_sms">
+	                    <title>SMS</title>
+	                    <sort_order>1</sort_order>
+                        <children>
+                            <stream translate="title" module="sy_sms">
+                                <title>Stream</title>
+                                <sort_order>2</sort_order>
+                                <action>adminhtml/sms_stream</action>
+                            </stream>
+                        </children>
+	                    <children>
+	                    	<templates translate="title" module="sy_sms">
+	                    		<title>Templates</title>
+	                    		<sort_order>3</sort_order>
+	                    		<action>adminhtml/sms_templates</action>
+	                    	</templates>
+	                    </children>
+                        <children>
+                            <variables translate="title" module="sy_sms">
+                                <title>Variables</title>
+                                <sort_order>4</sort_order>
+                                <action>adminhtml/sms_variables</action>
+                            </variables>
+                        </children>
+	                </smsclub>
+	            </children>
+	        </sy>
+        </menu>
+        <events>
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <sy_sms_history_block_add>
+                        <class>sy_sms/observer</class>
+                        <method>addSmsHistoryBlockToSalesOrderViewTab</method>
+                    </sy_sms_history_block_add>
+                </observers>
+            </core_block_abstract_to_html_after>
+            <core_block_abstract_prepare_layout_before>
+                <observers>
+                    <insert_novaposhta_status_into_grid>
+                        <model>sy_sms/observer</model>
+                        <method>addMassActionsToSalesOrderGrid</method>
+                    </insert_novaposhta_status_into_grid>
+                </observers>
+            </core_block_abstract_prepare_layout_before>
+        </events>
+    </adminhtml>
+    <frontend>
+        <events>
+            <sales_order_place_after>
+                <observers>
+                    <send_automatic_template>
+                        <type>singleton</type>
+                        <class>sy_sms/observer</class>
+                        <method>onOrderPlaceAfter</method>
+                    </send_automatic_template>
+                </observers>
+            </sales_order_place_after>
+        </events>
+    </frontend>
+    <crontab>
+        <jobs>
+            <sy_sms_update_orders_status>
+                <schedule>
+                    <cron_expr>* * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>sy_sms/observer::updateStatuses</model>
+                </run>
+            </sy_sms_update_orders_status>
+        </jobs>
+    </crontab>
+    <default>
+        <sy_sms>
+            <general>
+                <token backend_model="adminhtml/system_config_backend_encrypted" />
+                <country_code>+38</country_code>
+                <length>160</length>
+                <developer>Slava Yurthev</developer>
+            </general>
+            <automatic_events>
+                <place_order_address_type>2</place_order_address_type>
+            </automatic_events>
+        </sy_sms>
+    </default>
+</config>

@@ -1,0 +1,92 @@
+<?php
+/**
+ * SMS
+ * 
+ * @author Slava Yurthev
+ */
+?>
+<div class="clear"></div>
+	<div class="box-left">
+		<div class="entry-edit">
+			<div class="entry-edit-head"><h4 class="icon-head"><?php echo $this->__('SMS History'); ?></h4></div>
+			<fieldset>
+				<?php if($this->getHistory()->count()>0): ?>
+					<ul class="note-list">
+						<?php foreach($this->getHistory() as $sms): ?>
+							<li class="message">
+								<table width="100%">
+									<tr class="with-padding-top">
+										<td class="f-left"><strong><?php echo $sms->getData('sent'); ?></strong></td>
+										<?php if($sms->getData('recived')): ?>
+											<td class="f-right recived">
+												<strong><?php echo $sms->getData('recived'); ?></strong>
+											</td>
+										<?php endif; ?>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<?php echo $sms->getData('msg'); ?>
+										</td>
+									</tr>
+								</table>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				<?php endif; ?>
+			</fieldset>
+		</div>
+	</div>
+	<div class="box-right">
+		<div class="entry-edit">
+			<div class="entry-edit-head"><h4 class="icon-head"><?php echo $this->__('SMS Send'); ?></h4></div>
+			<fieldset>
+				<form action="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/sms_send'); ?>" id="sms_send_form">
+					<input type="hidden" name="order_id" value="<?php echo $this->getOrder()->getId(); ?>" />
+					<div class="field-row">
+						<label for="template"><?php echo $this->__('Template'); ?></label>
+						<select class="select" style="width:100%" id="template" onchange="sy.sms.setTemplate('sales/order', this.options[this.selectedIndex].value, $('message'))">
+							<option value="" selected="selected"></option>
+							<?php if($this->getTemplates()->count()>0): ?>
+								<?php foreach($this->getTemplates() as $template): ?>
+									<option value="<?php echo $template->getData('identifier'); ?>"><?php echo $template->getData('label'); ?></option>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</select>
+					</div>
+					<div class="field-row">
+						<label for="telephone_select"><?php echo $this->__('Telephone'); ?></label>
+						<select class="select" style="width:100%" id="telephone_select" onchange="$('telephone_input').setValue(this.options[this.selectedIndex].value)">
+							<option value="" selected="selected"></option>
+							<?php if($this->getTelephones()->count()>0): ?>
+								<?php foreach($this->getTelephones() as $telephone): ?>
+									<option value="<?php echo $telephone->getData('telephone'); ?>"><?php echo $telephone->getData('type'); ?></option>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</select>
+					</div>
+					<div class="field-row">
+						<input type="text" class="required-entry" id="telephone_input" style="width:100%;box-sizing:border-box" name="to" />
+					</div>
+					<div class="field-row">
+						<?php $size = Mage::getStoreConfig('sy_sms/general/length'); ?>
+						<label for="message"><?php echo $this->__('Message'); ?></label>
+						<textarea class="required-entry" style="width:100%;resize:none;box-sizing:border-box" rows="5" id="message" name="text" onkeyup="sy.sms.updateLength(this, $('message_counter'), '<?php echo $size; ?>')" onchange="sy.sms.updateLength(this, $('message_counter'), '<?php echo $size; ?>')"></textarea>
+					</div>
+					<div class="field-row">
+						<div class="f-left" id="message_counter">
+							<strong><?php echo $this->__('Symbols:'); ?></strong><span>0</span>
+							<strong><?php echo $this->__('Messages:'); ?></strong><span>1</span>
+						</div>
+						<div class="f-right">
+							<button type="button" onclick="return sy.sms.sendSalesOrderSms($('telephone_input'), $('message'), $('sms_send_form'));"><span><span><?php echo $this->__('Send'); ?></span></span></button>
+						</div>
+					</div>
+				</form>
+			</fieldset>
+		</div>
+	</div>
+<div class="clear"></div>
+<script type="text/javascript">
+sy.sms.ajax.template.url = "<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/sms_ajax/template'); ?>";
+sy.sms.config.order.id = "<?php echo $this->getOrder()->getId(); ?>";
+</script>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * SMS
+ * 
+ * @author Slava Yurthev
+ */
+-->
+<layout>
+	<default>
+		<reference name="head">
+			<action method="addJs"><script>SY/sms.js</script></action>
+		</reference>
+	</default>
+	<adminhtml_sales_order_view>
+		<reference name="head">
+			<action method="addCss"><name>SY/sms.css</name></action>
+		</reference>
+		<reference name="order_info">
+			<block type="sy_sms/adminhtml_sales_order_view" name="sy.order.info.sms.history" template="sy/sms/sales/order/view.phtml"  before="-"/>
+		</reference>
+	</adminhtml_sales_order_view>
+</layout>

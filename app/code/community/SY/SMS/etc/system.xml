@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * SMS
+ * 
+ * @author Slava Yurthev
+ */
+-->
+<config>
+    <tabs>
+        <sy translate="label">
+            <label>SY</label>
+            <sort_order>1</sort_order>
+        </sy>
+    </tabs>
+    <sections>
+        <sy_sms translate="label" module="sy_sms">
+            <label>SMS</label>
+            <tab>sy</tab>
+            <sort_order>1000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label" module="sy_sms">
+                    <label>Options</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label" module="sy_sms">
+                            <label>Active</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                        </active>
+                        <registration translate="label">
+                            <label></label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>sy_sms/adminhtml_system_config_registration_renderer</frontend_model>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </registration>
+                        <username translate="label">
+                            <label>Username</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </username>
+                        <token translate="label">
+                            <label>Token</label>
+                            <frontend_type>obscure</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </token>
+                        <sender_name translate="label">
+                            <label>Sender Name</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </sender_name>
+                        <country_code translate="label,comment">
+                            <label>Country Code</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>Will be prepend to the phone number</comment>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </country_code>
+                        <length translate="label,comment">
+                            <label>Length</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>Per Message</comment>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </length>
+                        <developer translate="label">
+                            <label>Developer</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>sy_sms/adminhtml_system_config_developer_renderer</frontend_model>
+                            <sort_order>999</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </developer>
+                    </fields>
+                </general>
+                <automatic_events translate="label" module="sy_sms">
+                    <label>Automatic Events</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>11</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <place_order translate="label" module="sy_sms">
+                            <label>Place Order</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <source_model>sy_sms/system_config_place_order</source_model>
+                        </place_order>
+                        <place_order_address_type translate="label" module="sy_sms">
+                            <label>Place Order Telephone</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <source_model>sy_sms/system_config_address_type</source_model>
+                        </place_order_address_type>
+                    </fields>
+                </automatic_events>
+            </groups>
+        </sy_sms>
+    </sections>
+</config>
